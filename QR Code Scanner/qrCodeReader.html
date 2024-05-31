@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="qr-result">
+        <h1>Scan QR HTML</h1>
+        <div style="display: flex;justify-content: center;">
+            <div id="qr-reader" style="width: 500px;"> <!--This div displays camera display size -->
+            </div>
+            <div id="qr-info"> </div>
+        </div>
+    </div>
+</body>
+<script src="https://unpkg.com/html5-qrcode"></script> <!-- importing 'html5-qrcode' module in frontend-->
+<script>
+    function domReady(func) {  //function to check if DOM is ready(has it loaded compelte webpage with style, script, etc)
+        /*uninitialized - Has not started loading
+            loading - Is loading
+            loaded - Has been loaded
+            interactive - Has loaded enough to interact with
+            complete - Fully loaded*/
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            setTimeout(func, 1)
+        } else {
+            document.addEventListener('DOMContentLoaded', func)
+        }
+    }
+    domReady(function () {
+        var myqr = document.getElementById('qr-result');
+        var qrinfo = document.getElementById('qr-info');
+        var countResult = [50];
+        var lastResult;
+        let scanArr = [''];
+
+        onScanSuccessfull = (decodeText, decodeResult) => {
+            if (decodeText !== lastResult) {                     //if new data is found.....   
+                console.log(decodeText);
+                var number = 1;
+                lastResult = decodeText;
+                scanArr.push(`${decodeText}`)
+                qrinfo.innerHTML = `${number}. ${scanArr}`;
+                ++number;
+                countResult.push(number +'\n')
+            }
+        }
+        function onScanFailure(error) {// handle scan failure, usually better to ignore and keep scanning.
+            console.error(`${error}`);
+        }
+        const config = { fps: 10,  qrbox: 250  };
+
+        
+        // var htmlScanner = new Html5QrcodeScanner(       ( id , options)
+        //     "qr-reader", config                      //qrBox display size, (fps = scanning rate of box)
+        // )
+        // htmlScanner.render(onScanSuccessfull)
+        const html5QrCode = new Html5Qrcode("qr-reader");   //Initializes an instance of Html5Qrcode class named html5QrCode
+        
+        html5QrCode.start({ facingMode: "environment" }, config, onScanSuccessfull);        // If you want to prefer rear camera
+        // Select back camera or fail with `OverconstrainedError`.   check (npm page for info)
+        // html5QrCode.start({ facingMode: { exact: "environment"} }, config, qrCodeSuccessCallback);
+    })
+</script>
+
+</html>

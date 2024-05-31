@@ -1,0 +1,24 @@
+* {
+  text-align: center;
+}
+.input {
+  width: 40%;
+  height: 50px;
+  margin: auto;
+  border: 2px solid rgb(67, 67, 67);
+  border-radius: 5px;
+  background-color: rgb(118, 255, 118);
+}
+.length {
+  width: 90px;
+  margin: auto;
+  border: 2px solid rgb(67, 67, 67);
+  border-radius: 3px;
+}
+li {
+  list-style-position: inside;
+}
+.button {
+  background-color: white;
+  border: 1px solid white;
+}
